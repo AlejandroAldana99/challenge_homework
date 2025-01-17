@@ -29,15 +29,17 @@ func main() {
 	// Add concurrency
 	fmt.Println("Adding concurrency")
 	var wg sync.WaitGroup
+	// items to add concurrently
+	items := []string{"item1", "item2", "item3", "item4", "item5"}
 
-	for i := 0; i <= 3; i++ {
+	for _, item := range items {
 		wg.Add(1)
-		value := fmt.Sprintf("test_%d", i)
-		go concurrency.AddItemSafety(value, &myStack, &wg)
+		go concurrency.AddItemSafety(item, &myStack, &wg)
 	}
 
 	wg.Wait()
 
+	// Check items in the stack
 	isEmpty, count = myStack.IsEmpty()
 	fmt.Printf("Concurrency results -> is empty: %t, number of items: %d \n", isEmpty, count)
 }
